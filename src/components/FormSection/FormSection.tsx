@@ -85,6 +85,11 @@ const FormSection: React.FC = () => {
                 aria-labelledby="question-label"
                 aria-invalid={!!errors.question}
                 aria-describedby={errors.question ? "question-error" : undefined}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                  }
+                }}
                 onChange={(e) => {
                   field.onChange(e);
                   dispatch(updateQuestion(e.target.value));
