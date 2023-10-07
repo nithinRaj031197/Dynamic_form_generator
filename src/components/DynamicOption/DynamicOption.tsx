@@ -71,21 +71,23 @@ function DynamicOption() {
                   }}
                   onChange={(e) => setEditNewOption(e.target.value)}
                 />
-                <Button className="option_save_btn" onClick={saveEditedOption}>
+                <Button tabIndex={3} className="option_save_btn" onClick={saveEditedOption}>
                   Save
                 </Button>
-                <Button className="option_cancel_btn" onClick={cancelEditOption}>
+                <Button tabIndex={3} className="option_cancel_btn" onClick={cancelEditOption}>
                   Cancel
                 </Button>
               </div>
             ) : (
               <>
-                <p style={{ color: "black" }}>{`${index + 1}. ${option}`}</p>
+                <p style={{ color: "black" }} tabIndex={3}>{`${index + 1}. ${option}`}</p>
                 <div className="mutate_option_container">
-                  <button type="button" className="option_edit_btn" onClick={() => startEditOption(index)}>
+                  <button tabIndex={3} type="button" className="option_edit_btn" onClick={() => startEditOption(index)}>
+                    <span className="visually-hidden">Edit Option</span>
                     <i className="fa-sharp fa-solid fa-pen-to-square"></i>
                   </button>
-                  <button type="button" className="option_delete_btn" onClick={() => deleteOption(index)}>
+                  <button tabIndex={3} type="button" className="option_delete_btn" onClick={() => deleteOption(index)}>
+                    <span className="visually-hidden">Delete the Option</span>
                     <i className="fa-sharp fa-solid fa-trash"></i>
                   </button>
                 </div>
@@ -97,6 +99,8 @@ function DynamicOption() {
       {!isEditing && (
         <div className="option_add_container">
           <input
+            tabIndex={3}
+            autoFocus
             className="option_input"
             type="text"
             value={newOption}
@@ -109,7 +113,14 @@ function DynamicOption() {
             onChange={(e) => setNewOption(e.target.value)}
             placeholder="Add a new option"
           />
-          <button className="option_add_btn" type="button" onClick={addOption}>
+          <button
+            tabIndex={4}
+            aria-aria-label="Click to add option"
+            className="option_add_btn"
+            type="button"
+            onClick={addOption}
+          >
+            <span className="visually-hidden">Add the Option</span>
             <i className="fa-sharp fa-solid fa-plus"></i>
           </button>
         </div>

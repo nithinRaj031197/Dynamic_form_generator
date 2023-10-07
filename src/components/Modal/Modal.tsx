@@ -22,6 +22,7 @@ const Modal = ({ children }: IModalProps) => {
     <div className="modal-overlay">
       <div className="modal-content">
         <button
+          tabIndex={4}
           onClick={() => {
             if (isFieldUpdate) {
               dispatch(turnOffFieldUpdate());
@@ -31,6 +32,7 @@ const Modal = ({ children }: IModalProps) => {
           }}
           className="modal-close-button"
         >
+          <span className="visually-hidden">Close Modal</span>
           &#x2716;
         </button>
         {children}

@@ -5,12 +5,13 @@ type ButtonProps = {
   type?: "button" | "submit" | "reset";
   className?: string;
   onClick?: () => void;
+  tabIndex?: number;
   children: ReactNode;
 };
 
-const Button: React.FC<ButtonProps> = ({ type, className, onClick, children }) => {
+const Button: React.FC<ButtonProps> = ({ type, className, onClick, tabIndex, children }) => {
   return (
-    <button type={type ?? "button"} className={` ${className} button`} onClick={onClick}>
+    <button tabIndex={tabIndex} type={type ?? "button"} className={` ${className} button`} onClick={onClick}>
       {children}
     </button>
   );

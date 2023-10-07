@@ -82,14 +82,20 @@ const FormSection: React.FC = () => {
                 placeholder="Enter Question..."
                 autoFocus
                 {...field}
+                aria-labelledby="question-label"
+                aria-invalid={!!errors.question}
+                aria-describedby={errors.question ? "question-error" : undefined}
                 onChange={(e) => {
                   field.onChange(e);
                   dispatch(updateQuestion(e.target.value));
                 }}
+                tabIndex={1}
               />
             )}
           />
-          <p style={{ color: "red" }}>{errors.question?.message}</p>
+          <p id="question-error" style={{ color: "red" }}>
+            {errors.question?.message}
+          </p>
         </div>
         <div className="select_input_container">
           <label htmlFor="select_input">Select Input Type:</label>
@@ -101,7 +107,10 @@ const FormSection: React.FC = () => {
               <select
                 id="select_input"
                 className="select_input"
+                aria-labelledby="select-input-label"
                 {...field}
+                aria-invalid={!!errors.select_input_type}
+                aria-describedby={errors.select_input_type ? "select-input-error" : undefined}
                 onChange={(e) => {
                   field.onChange(e);
                   dispatch(
@@ -110,6 +119,7 @@ const FormSection: React.FC = () => {
                     )
                   );
                 }}
+                tabIndex={2}
               >
                 <option value="text_input">Text Input</option>
                 <option value="text_area">Text Area</option>
@@ -119,7 +129,9 @@ const FormSection: React.FC = () => {
               </select>
             )}
           />
-          <p style={{ color: "red" }}>{errors.select_input_type?.message}</p>
+          <p id="select-input-error" style={{ color: "red" }}>
+            {errors.select_input_type?.message}
+          </p>
         </div>
       </div>
       <>
@@ -132,7 +144,7 @@ const FormSection: React.FC = () => {
         )}
       </>
       <div className="save_btn_container">
-        <Button type="submit" className="save_btn">
+        <Button tabIndex={3} type="submit" className="save_btn" aria-labelledby="save-button-label">
           Save
         </Button>
       </div>
