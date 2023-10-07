@@ -26,7 +26,10 @@ const formInputSlice = createSlice({
   initialState,
   reducers: {
     updateQuestion: (state, action: PayloadAction<string>) => {
-      state.formInput.question = action.payload;
+      state.formInput = {
+        ...state.formInput,
+        question: action.payload,
+      };
     },
     updateSelectInputType: (state, action: PayloadAction<SelectInputType>) => {
       state.formInput.select_input_type = action.payload;

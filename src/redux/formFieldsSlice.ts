@@ -50,12 +50,21 @@ const formFieldsSlice = createSlice({
     removeFormField: (state, action: PayloadAction<number>) => {
       state.formFields.splice(action.payload, 1);
     },
-    updateFormField: (state, action: PayloadAction<{ index: number; field: FormInitialInput }>) => {
-      state.formFields[action.payload.index] = action.payload.field;
+    updateFormField: (state, action: PayloadAction<FormInitialInput>) => {
+      const index = state.formFields.findIndex((field) => field.id === action.payload.id);
+
+      if (index !== -1) {
+        state.formFields[index] = action.payload;
+      }
+    },
+    reorderFormFields: (state, action) => {
+      const { startIndex, endIndex } = action.payload;
+      const [movedField] = state.formFields.splice(startIndex, 1);
+      state.formFields.splice(endIndex, 0, movedField);
     },
   },
 });
 
-export const { addFormField, removeFormField, updateFormField } = formFieldsSlice.actions;
+export const { addFormField, removeFormField, updateFormField, reorderFormFields } = formFieldsSlice.actions;
 
 export default formFieldsSlice.reducer;

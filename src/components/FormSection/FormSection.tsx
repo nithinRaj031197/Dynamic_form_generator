@@ -1,54 +1,124 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import "./formSection.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useDispatch } from "react-redux";
-import { closeModal, resetFormInput, updateQuestion, updateSelectInputType } from "../../redux/formInputSlice";
+import {
+  closeModal,
+  resetFormInput,
+  turnOffFieldUpdate,
+  updateQuestion,
+  updateSelectInputType,
+} from "../../redux/formInputSlice";
 import DynamicOption from "../DynamicOption/DynamicOption";
 import Button from "../Button/Button";
-import { addFormField } from "../../redux/formFieldsSlice";
+import { addFormField, updateFormField } from "../../redux/formFieldsSlice";
+import { Controller, useForm } from "react-hook-form";
+
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { FormInitialInput } from "../../global";
+import { toast } from "react-toastify";
+
+const schema = yup.object().shape({
+  question: yup.string().required("Question is required"),
+  select_input_type: yup
+    .string()
+    .oneOf(["text_input", "text_area", "dropdown", "checkbox", "radio"], "Invalid input type")
+    .required("Select Input Type is required"),
+});
 
 const FormSection: React.FC = () => {
-  const isFieldUpdate = useSelector((state: RootState) => state.formInput.isFieldUpdate);
-
   const formInputValue = useSelector((state: RootState) => state.formInput.formInput);
+
+  const isFieldUpdate = useSelector((state: RootState) => state.formInput.isFieldUpdate);
 
   const dispatch = useDispatch();
 
-  console.log("isFieldUpdate", isFieldUpdate);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data: FormInitialInput) => {
+    if (
+      data.select_input_type === "checkbox" ||
+      data.select_input_type === "dropdown" ||
+      data.select_input_type === "radio"
+    ) {
+      if (!("options" in formInputValue) || (formInputValue.options && formInputValue.options.length < 2)) {
+        toast.error("Provide at least two options!", {});
+        return;
+      }
+    }
+
+    if (isFieldUpdate) {
+      dispatch(updateFormField({ ...data, ...formInputValue, options: formInputValue.options }));
+      dispatch(turnOffFieldUpdate());
+    } else {
+      dispatch(addFormField({ ...data, ...formInputValue, options: formInputValue.options }));
+    }
+    dispatch(closeModal());
+    dispatch(resetFormInput());
+    toast.success("Successfully added the field!", {});
+  };
+
   return (
-    <form className="form_generator_container" onSubmit={(e) => e.preventDefault()}>
+    <form className="form_generator_container" onSubmit={handleSubmit(onSubmit)}>
       <div className="form_top_section">
         <div className="question_container">
           <label htmlFor="question">Question:</label>
-          <input
-            type="text"
-            id="question"
+          <Controller
             name="question"
-            placeholder="Enter Question..."
-            onChange={(e) => dispatch(updateQuestion(e.target.value))}
-            value={formInputValue.question}
+            control={control}
+            defaultValue={formInputValue.question}
+            render={({ field }) => (
+              <input
+                type="text"
+                id="question"
+                placeholder="Enter Question..."
+                {...field}
+                onChange={(e) => {
+                  field.onChange(e);
+                  dispatch(updateQuestion(e.target.value));
+                }}
+              />
+            )}
           />
+          <p style={{ color: "red" }}>{errors.question?.message}</p>
         </div>
         <div className="select_input_container">
           <label htmlFor="select_input">Select Input Type:</label>
-          <select
-            id="select_input"
-            className="select_input"
+          <Controller
             name="select_input_type"
-            onChange={(e) =>
-              dispatch(
-                updateSelectInputType(e.target.value as "text_input" | "text_area" | "dropdown" | "checkbox" | "radio")
-              )
-            }
-            value={formInputValue.select_input_type}
-          >
-            <option value="text_input">Text Input</option>
-            <option value="text_area">Text Area</option>
-            <option value="dropdown">Drop Down</option>
-            <option value="checkbox">Checkbox</option>
-            <option value="radio">Radio</option>
-          </select>
+            control={control}
+            defaultValue={formInputValue.select_input_type}
+            render={({ field }) => (
+              <select
+                id="select_input"
+                className="select_input"
+                {...field}
+                onChange={(e) => {
+                  field.onChange(e);
+                  dispatch(
+                    updateSelectInputType(
+                      e.target.value as "text_input" | "text_area" | "dropdown" | "checkbox" | "radio"
+                    )
+                  );
+                }}
+              >
+                <option value="text_input">Text Input</option>
+                <option value="text_area">Text Area</option>
+                <option value="dropdown">Drop Down</option>
+                <option value="checkbox">Checkbox</option>
+                <option value="radio">Radio</option>
+              </select>
+            )}
+          />
+          <p style={{ color: "red" }}>{errors.select_input_type?.message}</p>
         </div>
       </div>
       <>
@@ -61,15 +131,7 @@ const FormSection: React.FC = () => {
         )}
       </>
       <div className="save_btn_container">
-        <Button
-          type="button"
-          className="save_btn"
-          onClick={() => {
-            dispatch(addFormField(formInputValue));
-            dispatch(closeModal());
-            dispatch(resetFormInput());
-          }}
-        >
+        <Button type="submit" className="save_btn">
           Save
         </Button>
       </div>

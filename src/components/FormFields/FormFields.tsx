@@ -60,6 +60,7 @@ const FormFields: FC = () => {
                 <div className="input form_dropdown">
                   <label className="form_field_label">{field.question}</label>
                   <select id="select_input" className="form_select_input">
+                    <option value="">Select an option</option>
                     {field?.options?.map((option: string) => {
                       return (
                         <option key={option} value={option}>
