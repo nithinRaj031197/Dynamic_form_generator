@@ -1,0 +1,80 @@
+.form_fields_container {
+  padding: 120px 30px 0;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.form_field_label {
+  font-size: var(--large);
+  font-weight: bold;
+}
+
+.form_text_input input {
+  padding: 10px;
+  width: 400px;
+  font-size: var(--small);
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #c5c1c1;
+}
+
+.form_text_area {
+  width: 460px;
+  font-size: var(--medium);
+}
+
+.form_text_area textarea {
+  margin-top: 10px;
+  font-size: var(--small);
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #c5c1c1;
+  padding: 5px;
+}
+
+.form_dropdown {
+  width: 460px;
+  font-size: var(--medium);
+}
+
+.form_select_input {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: var(--medium);
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #c5c1c1;
+}
+
+.form_checkbox p {
+  font-size: var(--large);
+  font-weight: bold;
+}
+
+.checkbox_container {
+  margin: 5px 0;
+}
+
+.checkbox_container .checkbox_label input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.form_radio p {
+  font-size: var(--large);
+  font-weight: bold;
+}
+
+.radio_container {
+  margin: 5px 0;
+}
+
+.radio_container .radio_label input[type="radio"] {
+  margin-right: 10px;
+}

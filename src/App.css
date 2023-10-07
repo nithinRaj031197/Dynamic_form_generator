@@ -5,29 +5,30 @@
 }
 
 body {
-  min-width: 100vw;
+  /* min-width: 100vw; */
   min-height: 100vh;
   display: flex;
   justify-content: center;
+  position: relative;
+  background-color: rgb(166, 232, 240);
+}
+.main__container {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  /* width: 600px; */
+  justify-content: center;
+  background-color: rgb(50, 100, 100);
+  color: #fff;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 30px;
 }
 
-.main__container {
+.top_rack {
   display: flex;
   flex-direction: row;
   padding: 10px;
-  gap: 10px;
-}
-
-.add_field_btn {
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  background-color: rgb(3, 114, 114);
-  color: #fff;
-}
-
-.add_field_btn:active {
-  background-color: rgba(3, 114, 114, 0.8);
+  gap: 20px;
+  justify-content: center;
 }

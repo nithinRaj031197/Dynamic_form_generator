@@ -1,0 +1,67 @@
+.dynamic_option_container {
+  padding: 15px;
+}
+
+.dynamic_option_container > ul {
+  list-style: none;
+}
+
+.options {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.options p {
+  width: 350px;
+  font-size: var(--large);
+  padding: 5px;
+}
+
+.mutate_option_container {
+  width: 70px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.option_add_container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.option_input {
+  padding: 5px;
+  width: 400px;
+  font-size: var(--medium);
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #000;
+}
+
+.option_add_btn,
+.option_edit_btn,
+.option_delete_btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  /* font-size: 20px; */
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.option_save_btn,
+.option_cancel_btn {
+  padding: 5px;
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: white;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  margin-left: 5px;
+}
+
+.option_save_btn:active .option_cancel_btn:active {
+  background-color: var(--primary-light-color);
+}
