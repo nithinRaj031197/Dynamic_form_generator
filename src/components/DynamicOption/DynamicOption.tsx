@@ -73,28 +73,30 @@
 
 // export default DynamicOption;
 
-import React, { useState } from "react";
+import { useState } from "react";
 import "./dynamicOption.css";
+import Button from "../Button/Button";
+import { useDispatch } from "react-redux";
+import { addOptions, updateOptions } from "../../redux/formInputSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
-type IDynamicOptionProps = {
-  options: any | string[];
-  formInputValue: any;
-  setFormInputValue: any;
-};
-
-function DynamicOption({ options, formInputValue, setFormInputValue }: IDynamicOptionProps) {
+function DynamicOption() {
   const [newOption, setNewOption] = useState("");
   const [editNewOption, setEditNewOption] = useState("");
   const [editingIndex, setEditingIndex] = useState(-1);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
+  const dispatch = useDispatch();
+
+  const options = useSelector((state: RootState) => state.formInput.formInput.options) ?? [];
+
   const addOption = () => {
     if (newOption.trim() !== "") {
-      setFormInputValue({ ...formInputValue, options: [...options, newOption] });
+      dispatch(addOptions(newOption));
       setNewOption("");
     }
   };
-  console.log(options);
 
   const startEditOption = (index: number) => {
     setIsEditing(true);
@@ -112,7 +114,7 @@ function DynamicOption({ options, formInputValue, setFormInputValue }: IDynamicO
     if (editNewOption.trim() !== "") {
       const updatedOptions = [...options];
       updatedOptions[editingIndex] = editNewOption;
-      setFormInputValue({ ...formInputValue, options: updatedOptions });
+      dispatch(updateOptions(updatedOptions));
       setEditingIndex(-1);
       setIsEditing(false);
       setEditNewOption("");
@@ -122,7 +124,7 @@ function DynamicOption({ options, formInputValue, setFormInputValue }: IDynamicO
   const deleteOption = (index: number) => {
     const updatedOptions = [...options];
     updatedOptions.splice(index, 1);
-    setFormInputValue({ ...formInputValue, options: updatedOptions });
+    dispatch(updateOptions(updatedOptions));
   };
 
   return (
@@ -138,12 +140,12 @@ function DynamicOption({ options, formInputValue, setFormInputValue }: IDynamicO
                   value={editNewOption}
                   onChange={(e) => setEditNewOption(e.target.value)}
                 />
-                <button className="option_save_btn" onClick={saveEditedOption}>
+                <Button className="option_save_btn" onClick={saveEditedOption}>
                   Save
-                </button>
-                <button className="option_cancel_btn" onClick={cancelEditOption}>
+                </Button>
+                <Button className="option_cancel_btn" onClick={cancelEditOption}>
                   Cancel
-                </button>
+                </Button>
               </div>
             ) : (
               <>

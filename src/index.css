@@ -1,7 +1,11 @@
 :root {
   --primary-color: rgb(3, 114, 114);
-  --primary-light-color: rgba(3, 114, 114, 0.8);
+  --primary-light-color: rgba(3, 114, 114, 0.5);
   --small: 14px;
   --medium: 16px;
   --large: 18px;
+}
+
+#root {
+  width: 550px;
 }

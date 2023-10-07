@@ -1,57 +1,64 @@
+import { useSelector } from "react-redux";
 import { FormInitialInput } from "../../global";
 
 import "./formFields.css";
-type Props = {
-  formFields: FormInitialInput[];
-};
+import { RootState } from "../../redux/store";
+import { FC } from "react";
+import { useDispatch } from "react-redux";
+import { turnOnFieldUpdate, openModal, setFormInput } from "../../redux/formInputSlice";
+import { removeFormField } from "../../redux/formFieldsSlice";
 
-const FormFields = ({ formFields }: Props) => {
-  const handleEditField = (id: any) => {};
+const FormFields: FC = () => {
+  const formFields = useSelector((state: RootState) => state.formFields.formFields);
+
+  const dispatch = useDispatch();
+
+  const handleEditField = (id: number | undefined) => {
+    if (id !== undefined) {
+      const getFieldData = formFields?.find((field: FormInitialInput) => field.id === id);
+      if (getFieldData) {
+        setTimeout(() => {
+          dispatch(setFormInput(getFieldData));
+          dispatch(openModal());
+          dispatch(turnOnFieldUpdate());
+        }, 0);
+      }
+    }
+  };
+
   return (
     <>
       <div className="form_fields_container">
-        {formFields?.map((field: FormInitialInput) => {
+        {formFields?.map((field: FormInitialInput, index: number) => {
           return (
             <div key={field.question}>
               {field.select_input_type === "text_input" && (
                 <div className="input form_text_input">
-                  <label className="form_field_label">
-                    {field.question}
-                    <span
-                      onClick={() => handleEditField(field.id)}
-                      style={{ fontSize: "14px", cursor: "pointer", float: "right" }}
-                    >
-                      <i className="fa-sharp fa-solid fa-pen-to-square"></i>
-                    </span>
-                  </label>
+                  <label className="form_field_label">{field.question}</label>
                   <input type="text" placeholder="Your Answer" />
+                  <div
+                    style={{ position: "absolute", display: "flex", flexDirection: "row", gap: 5, right: 5, top: 5 }}
+                  >
+                    <UpdateField onClick={() => handleEditField(field?.id)} />
+                    <DeleteField onClick={() => dispatch(removeFormField(index))} />
+                  </div>
                 </div>
               )}
               {field.select_input_type === "text_area" && (
                 <div className="input form_text_area">
-                  <label className="form_field_label">
-                    {field.question}
-                    <span
-                      onClick={() => handleEditField(field.id)}
-                      style={{ fontSize: "14px", cursor: "pointer", float: "right" }}
-                    >
-                      <i className="fa-sharp fa-solid fa-pen-to-square"></i>
-                    </span>
-                  </label>
+                  <label className="form_field_label">{field.question}</label>
                   <textarea rows={1} placeholder="Your Answer"></textarea>
+                  <div
+                    style={{ position: "absolute", display: "flex", flexDirection: "row", gap: 5, right: 5, top: 5 }}
+                  >
+                    <UpdateField onClick={() => handleEditField(field.id)} />
+                    <DeleteField onClick={() => dispatch(removeFormField(index))} />
+                  </div>
                 </div>
               )}
               {field.select_input_type === "dropdown" && (
                 <div className="input form_dropdown">
-                  <label className="form_field_label">
-                    {field.question}
-                    <span
-                      onClick={() => handleEditField(field.id)}
-                      style={{ fontSize: "14px", cursor: "pointer", float: "right" }}
-                    >
-                      <i className="fa-sharp fa-solid fa-pen-to-square"></i>
-                    </span>
-                  </label>
+                  <label className="form_field_label">{field.question}</label>
                   <select id="select_input" className="form_select_input">
                     {field?.options?.map((option: string) => {
                       return (
@@ -61,19 +68,17 @@ const FormFields = ({ formFields }: Props) => {
                       );
                     })}
                   </select>
+                  <div
+                    style={{ position: "absolute", display: "flex", flexDirection: "row", gap: 5, right: 5, top: 5 }}
+                  >
+                    <UpdateField onClick={() => handleEditField(field.id)} />
+                    <DeleteField onClick={() => dispatch(removeFormField(index))} />
+                  </div>
                 </div>
               )}
               {field.select_input_type === "checkbox" && (
                 <div className="input form_checkbox">
-                  <p>
-                    {field.question}
-                    <span
-                      onClick={() => handleEditField(field.id)}
-                      style={{ fontSize: "14px", cursor: "pointer", float: "right" }}
-                    >
-                      <i className="fa-sharp fa-solid fa-pen-to-square"></i>
-                    </span>
-                  </p>
+                  <p>{field.question}</p>
                   {field?.options?.map((option: string) => {
                     return (
                       <div className="checkbox_container" key={option}>
@@ -84,19 +89,17 @@ const FormFields = ({ formFields }: Props) => {
                       </div>
                     );
                   })}
+                  <div
+                    style={{ position: "absolute", display: "flex", flexDirection: "row", gap: 5, right: 5, top: 5 }}
+                  >
+                    <UpdateField onClick={() => handleEditField(field.id)} />
+                    <DeleteField onClick={() => dispatch(removeFormField(index))} />
+                  </div>
                 </div>
               )}
               {field.select_input_type === "radio" && (
                 <div className="input form_radio">
-                  <p>
-                    {field.question}
-                    <span
-                      onClick={() => handleEditField(field.id)}
-                      style={{ fontSize: "14px", cursor: "pointer", float: "right" }}
-                    >
-                      <i className="fa-sharp fa-solid fa-pen-to-square"></i>
-                    </span>
-                  </p>
+                  <p>{field.question}</p>
                   {field?.options?.map((option: string) => {
                     return (
                       <div className="radio_container" key={option}>
@@ -107,6 +110,12 @@ const FormFields = ({ formFields }: Props) => {
                       </div>
                     );
                   })}
+                  <div
+                    style={{ position: "absolute", display: "flex", flexDirection: "row", gap: 5, right: 5, top: 5 }}
+                  >
+                    <UpdateField onClick={() => handleEditField(field.id)} />
+                    <DeleteField onClick={() => dispatch(removeFormField(index))} />
+                  </div>
                 </div>
               )}
             </div>
@@ -118,3 +127,21 @@ const FormFields = ({ formFields }: Props) => {
 };
 
 export default FormFields;
+
+const DeleteField = ({ onClick }: any) => {
+  return (
+    <div>
+      <button type="button" onClick={() => onClick()} className="option_delete_btn" style={{ float: "right" }}>
+        <i className="fa-sharp fa-solid fa-trash"></i>
+      </button>
+    </div>
+  );
+};
+
+const UpdateField = ({ onClick }: any) => {
+  return (
+    <button type="button" className="option_edit_btn" onClick={() => onClick()}>
+      <i className="fa-sharp fa-solid fa-pen-to-square"></i>
+    </button>
+  );
+};
