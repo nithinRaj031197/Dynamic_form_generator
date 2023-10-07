@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React from "react";
 import "./formSection.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
