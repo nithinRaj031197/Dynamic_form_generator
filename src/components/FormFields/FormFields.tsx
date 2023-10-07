@@ -16,6 +16,7 @@ const FormFields: FC = () => {
   const handleEditField = (id: number | undefined) => {
     if (id !== undefined) {
       const getFieldData = formFields?.find((field: FormInitialInput) => field.id === id);
+      console.log("getFieldData", getFieldData);
       if (getFieldData) {
         setTimeout(() => {
           dispatch(setFormInput(getFieldData));

@@ -59,7 +59,7 @@ const FormSection: React.FC = () => {
       dispatch(updateFormField({ ...data, ...formInputValue, options: formInputValue.options }));
       dispatch(turnOffFieldUpdate());
     } else {
-      dispatch(addFormField({ ...data, ...formInputValue, options: formInputValue.options }));
+      dispatch(addFormField({ ...data, ...formInputValue, id: new Date().getTime(), options: formInputValue.options }));
     }
     dispatch(closeModal());
     dispatch(resetFormInput());
@@ -80,6 +80,7 @@ const FormSection: React.FC = () => {
                 type="text"
                 id="question"
                 placeholder="Enter Question..."
+                autoFocus
                 {...field}
                 onChange={(e) => {
                   field.onChange(e);

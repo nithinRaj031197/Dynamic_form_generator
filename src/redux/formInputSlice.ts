@@ -13,7 +13,6 @@ const initialState: IFormInputInitialState = {
     question: "",
     select_input_type: "text_input" as SelectInputType,
     options: [],
-    id: new Date().getTime(),
   },
   modal: {
     isModalOpen: false,

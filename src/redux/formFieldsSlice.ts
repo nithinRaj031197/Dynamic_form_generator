@@ -6,38 +6,7 @@ interface FormFieldsState {
 }
 
 const initialState: FormFieldsState = {
-  formFields: [
-    {
-      question: "dasda",
-      select_input_type: "text_input",
-      options: [],
-      id: 1696616725551,
-    },
-    {
-      question: "sadsad",
-      select_input_type: "text_area",
-      options: [],
-      id: 1696616729223,
-    },
-    {
-      question: "Drop",
-      select_input_type: "dropdown",
-      options: ["ssd", "ssadda"],
-      id: 1696617386489,
-    },
-    {
-      question: "Checkbox",
-      select_input_type: "checkbox",
-      options: ["ssd", "ssadda"],
-      id: 1696617386490,
-    },
-    {
-      question: "Radio",
-      select_input_type: "radio",
-      options: ["ssd", "ssadda"],
-      id: 1696617386491,
-    },
-  ],
+  formFields: JSON.parse(localStorage.getItem("formFields") ?? "[]"),
 };
 
 const formFieldsSlice = createSlice({
@@ -46,21 +15,25 @@ const formFieldsSlice = createSlice({
   reducers: {
     addFormField: (state, action: PayloadAction<FormInitialInput>) => {
       state.formFields.push(action.payload);
+      localStorage.setItem("formFields", JSON.stringify(state.formFields));
     },
     removeFormField: (state, action: PayloadAction<number>) => {
       state.formFields.splice(action.payload, 1);
+      localStorage.setItem("formFields", JSON.stringify(state.formFields));
     },
     updateFormField: (state, action: PayloadAction<FormInitialInput>) => {
       const index = state.formFields.findIndex((field) => field.id === action.payload.id);
-
+      console.log(index);
       if (index !== -1) {
         state.formFields[index] = action.payload;
+        localStorage.setItem("formFields", JSON.stringify(state.formFields));
       }
     },
     reorderFormFields: (state, action) => {
       const { startIndex, endIndex } = action.payload;
       const [movedField] = state.formFields.splice(startIndex, 1);
       state.formFields.splice(endIndex, 0, movedField);
+      localStorage.setItem("formFields", JSON.stringify(state.formFields));
     },
   },
 });

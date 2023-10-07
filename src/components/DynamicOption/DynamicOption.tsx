@@ -63,6 +63,12 @@ function DynamicOption() {
                   className="option_input"
                   type="text"
                   value={editNewOption}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      saveEditedOption();
+                    }
+                  }}
                   onChange={(e) => setEditNewOption(e.target.value)}
                 />
                 <Button className="option_save_btn" onClick={saveEditedOption}>
@@ -94,6 +100,12 @@ function DynamicOption() {
             className="option_input"
             type="text"
             value={newOption}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                addOption();
+              }
+            }}
             onChange={(e) => setNewOption(e.target.value)}
             placeholder="Add a new option"
           />
