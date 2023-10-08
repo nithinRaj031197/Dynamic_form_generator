@@ -6,17 +6,23 @@ import { RootState } from "../../redux/store";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { turnOnFieldUpdate, openModal, setFormInput } from "../../redux/formInputSlice";
-import { removeFormField } from "../../redux/formFieldsSlice";
+import { removeFormField, reorderFormFields } from "../../redux/formFieldsSlice";
+import TextInputField from "./TextInputField/TextInputField";
+import TextAreaField from "./TextAreaField/TextAreaField";
+import DropDownField from "./DropDownField/DropDownField";
+import CheckboxField from "./CheckboxField/CheckboxField";
+import RadioField from "./RadioField/RadioField";
+import EditDeleteControls from "./EditDeleteControls/EditDeleteControls";
 
 const FormFields: FC = () => {
   const formFields = useSelector((state: RootState) => state.formFields.formFields);
 
   const dispatch = useDispatch();
 
-  const handleEditField = (id: number | undefined) => {
+  const handleEditField = (id: string | undefined) => {
     if (id !== undefined) {
       const getFieldData = formFields?.find((field: FormInitialInput) => field.id === id);
-      console.log("getFieldData", getFieldData);
+
       if (getFieldData) {
         setTimeout(() => {
           dispatch(setFormInput(getFieldData));
@@ -27,6 +33,26 @@ const FormFields: FC = () => {
     }
   };
 
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, id: string) => {
+    e.dataTransfer.setData("text/plain", id.toString());
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, newIndex: number) => {
+    e.preventDefault();
+
+    const itemId = e.dataTransfer.getData("text/plain");
+
+    const draggedItemIndex = formFields.findIndex((item) => item.id === itemId);
+
+    if (draggedItemIndex !== -1) {
+      dispatch(reorderFormFields({ startIndex: draggedItemIndex, endIndex: newIndex }));
+    }
+  };
+
   return (
     <>
       <div className="form_fields_container">
@@ -34,91 +60,88 @@ const FormFields: FC = () => {
           return (
             <div key={field.question}>
               {field.select_input_type === "text_input" && (
-                <div className="input form_text_input">
-                  <label className="form_field_label">{field.question}</label>
-                  <input type="text" placeholder="Your Answer" />
-                  <div
-                    style={{ position: "absolute", display: "flex", flexDirection: "row", gap: 5, right: 5, top: 5 }}
+                <>
+                  <TextInputField
+                    field={field}
+                    label={field.question}
+                    handleDragOver={handleDragOver}
+                    handleDragStart={handleDragStart}
+                    handleDrop={handleDrop}
+                    index={index}
+                    placeholder="Your Answer"
+                    key={field.id}
                   >
-                    <UpdateField onClick={() => handleEditField(field?.id)} />
-                    <DeleteField onClick={() => dispatch(removeFormField(index))} />
-                  </div>
-                </div>
+                    <EditDeleteControls
+                      onEdit={() => handleEditField(field.id as string)}
+                      onDelete={() => dispatch(removeFormField(index))}
+                    />
+                  </TextInputField>
+                </>
               )}
               {field.select_input_type === "text_area" && (
-                <div className="input form_text_area">
-                  <label className="form_field_label">{field.question}</label>
-                  <textarea rows={1} placeholder="Your Answer"></textarea>
-                  <div
-                    style={{ position: "absolute", display: "flex", flexDirection: "row", gap: 5, right: 5, top: 5 }}
-                  >
-                    <UpdateField onClick={() => handleEditField(field.id)} />
-                    <DeleteField onClick={() => dispatch(removeFormField(index))} />
-                  </div>
-                </div>
+                <TextAreaField
+                  field={field}
+                  label={field.question}
+                  handleDragOver={handleDragOver}
+                  handleDragStart={handleDragStart}
+                  handleDrop={handleDrop}
+                  index={index}
+                  placeholder="Your Answer"
+                  key={field.id}
+                >
+                  <EditDeleteControls
+                    onEdit={() => handleEditField(field.id as string)}
+                    onDelete={() => dispatch(removeFormField(index))}
+                  />
+                </TextAreaField>
               )}
               {field.select_input_type === "dropdown" && (
-                <div className="input form_dropdown">
-                  <label className="form_field_label">{field.question}</label>
-                  <select id="select_input" className="form_select_input">
-                    <option value="">Select an option</option>
-                    {field?.options?.map((option: string) => {
-                      return (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  <div
-                    style={{ position: "absolute", display: "flex", flexDirection: "row", gap: 5, right: 5, top: 5 }}
-                  >
-                    <UpdateField onClick={() => handleEditField(field.id)} />
-                    <DeleteField onClick={() => dispatch(removeFormField(index))} />
-                  </div>
-                </div>
+                <DropDownField
+                  field={field}
+                  label={field.question}
+                  handleDragOver={handleDragOver}
+                  handleDragStart={handleDragStart}
+                  handleDrop={handleDrop}
+                  index={index}
+                  key={field.id}
+                >
+                  <EditDeleteControls
+                    onEdit={() => handleEditField(field.id as string)}
+                    onDelete={() => dispatch(removeFormField(index))}
+                  />
+                </DropDownField>
               )}
               {field.select_input_type === "checkbox" && (
-                <div className="input form_checkbox">
-                  <p>{field.question}</p>
-                  {field?.options?.map((option: string) => {
-                    return (
-                      <div className="checkbox_container" key={option}>
-                        <label className="checkbox_label">
-                          <input type="checkbox" />
-                          {option}
-                        </label>
-                      </div>
-                    );
-                  })}
-                  <div
-                    style={{ position: "absolute", display: "flex", flexDirection: "row", gap: 5, right: 5, top: 5 }}
-                  >
-                    <UpdateField onClick={() => handleEditField(field.id)} />
-                    <DeleteField onClick={() => dispatch(removeFormField(index))} />
-                  </div>
-                </div>
+                <CheckboxField
+                  field={field}
+                  label={field.question}
+                  handleDragOver={handleDragOver}
+                  handleDragStart={handleDragStart}
+                  handleDrop={handleDrop}
+                  index={index}
+                  key={field.id}
+                >
+                  <EditDeleteControls
+                    onEdit={() => handleEditField(field.id as string)}
+                    onDelete={() => dispatch(removeFormField(index))}
+                  />
+                </CheckboxField>
               )}
               {field.select_input_type === "radio" && (
-                <div className="input form_radio">
-                  <p>{field.question}</p>
-                  {field?.options?.map((option: string) => {
-                    return (
-                      <div className="radio_container" key={option}>
-                        <label key={option} className="radio_label">
-                          <input type="radio" />
-                          {option}
-                        </label>
-                      </div>
-                    );
-                  })}
-                  <div
-                    style={{ position: "absolute", display: "flex", flexDirection: "row", gap: 5, right: 5, top: 5 }}
-                  >
-                    <UpdateField onClick={() => handleEditField(field.id)} />
-                    <DeleteField onClick={() => dispatch(removeFormField(index))} />
-                  </div>
-                </div>
+                <RadioField
+                  field={field}
+                  label={field.question}
+                  handleDragOver={handleDragOver}
+                  handleDragStart={handleDragStart}
+                  handleDrop={handleDrop}
+                  index={index}
+                  key={field.id}
+                >
+                  <EditDeleteControls
+                    onEdit={() => handleEditField(field.id as string)}
+                    onDelete={() => dispatch(removeFormField(index))}
+                  />
+                </RadioField>
               )}
             </div>
           );
@@ -130,7 +153,7 @@ const FormFields: FC = () => {
 
 export default FormFields;
 
-const DeleteField = ({ onClick }: any) => {
+const DeleteField = ({ onClick }: { onClick: () => void }) => {
   return (
     <div>
       <button type="button" onClick={() => onClick()} className="option_delete_btn" style={{ float: "right" }}>
@@ -140,7 +163,7 @@ const DeleteField = ({ onClick }: any) => {
   );
 };
 
-const UpdateField = ({ onClick }: any) => {
+const UpdateField = ({ onClick }: { onClick: () => void }) => {
   return (
     <button type="button" className="option_edit_btn" onClick={() => onClick()}>
       <i className="fa-sharp fa-solid fa-pen-to-square"></i>

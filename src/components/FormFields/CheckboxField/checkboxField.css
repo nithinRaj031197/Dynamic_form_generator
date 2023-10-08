@@ -1,0 +1,21 @@
+.form_checkbox p {
+  font-size: var(--large);
+  font-weight: bold;
+}
+
+.form_checkbox {
+  width: 450px;
+}
+
+.checkbox_label {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox_container .checkbox_label input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.checkbox_container {
+  margin: 5px 0;
+}

@@ -1,0 +1,10 @@
+.option_add_btn,
+.option_edit_btn,
+.option_delete_btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}

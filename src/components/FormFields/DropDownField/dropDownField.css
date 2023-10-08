@@ -1,0 +1,14 @@
+.form_select_input {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: var(--medium);
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #c5c1c1;
+  cursor: pointer;
+}
+
+.form_dropdown {
+  width: 450px;
+  font-size: var(--medium);
+}

@@ -115,7 +115,7 @@ function DynamicOption() {
           />
           <button
             tabIndex={4}
-            aria-aria-label="Click to add option"
+            aria-label="Click to add option"
             className="option_add_btn"
             type="button"
             onClick={addOption}

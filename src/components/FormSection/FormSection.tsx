@@ -14,7 +14,7 @@ import DynamicOption from "../DynamicOption/DynamicOption";
 import Button from "../Button/Button";
 import { addFormField, updateFormField } from "../../redux/formFieldsSlice";
 import { Controller, useForm } from "react-hook-form";
-
+import { v4 as uuidv4 } from "uuid";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormInitialInput } from "../../global";
@@ -58,12 +58,13 @@ const FormSection: React.FC = () => {
     if (isFieldUpdate) {
       dispatch(updateFormField({ ...data, ...formInputValue, options: formInputValue.options }));
       dispatch(turnOffFieldUpdate());
+      toast.success("Successfully edited the field!", {});
     } else {
-      dispatch(addFormField({ ...data, ...formInputValue, id: new Date().getTime(), options: formInputValue.options }));
+      dispatch(addFormField({ ...data, ...formInputValue, id: uuidv4(), options: formInputValue.options }));
+      toast.success("Successfully added the field!", {});
     }
     dispatch(closeModal());
     dispatch(resetFormInput());
-    toast.success("Successfully added the field!", {});
   };
 
   return (

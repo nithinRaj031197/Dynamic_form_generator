@@ -1,0 +1,13 @@
+.form_text_area {
+  width: 450px;
+  font-size: var(--medium);
+}
+
+.form_text_area textarea {
+  margin-top: 10px;
+  font-size: var(--small);
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #c5c1c1;
+  padding: 5px 0px;
+}

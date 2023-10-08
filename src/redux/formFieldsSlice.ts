@@ -23,7 +23,7 @@ const formFieldsSlice = createSlice({
     },
     updateFormField: (state, action: PayloadAction<FormInitialInput>) => {
       const index = state.formFields.findIndex((field) => field.id === action.payload.id);
-      console.log(index);
+
       if (index !== -1) {
         state.formFields[index] = action.payload;
         localStorage.setItem("formFields", JSON.stringify(state.formFields));

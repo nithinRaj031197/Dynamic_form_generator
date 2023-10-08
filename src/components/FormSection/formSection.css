@@ -8,7 +8,6 @@
   flex-direction: row;
   gap: 20px;
   justify-content: space-around;
-  /* align-items: center; */
 }
 
 .question_container {
