@@ -152,21 +152,3 @@ const FormFields: FC = () => {
 };
 
 export default FormFields;
-
-const DeleteField = ({ onClick }: { onClick: () => void }) => {
-  return (
-    <div>
-      <button type="button" onClick={() => onClick()} className="option_delete_btn" style={{ float: "right" }}>
-        <i className="fa-sharp fa-solid fa-trash"></i>
-      </button>
-    </div>
-  );
-};
-
-const UpdateField = ({ onClick }: { onClick: () => void }) => {
-  return (
-    <button type="button" className="option_edit_btn" onClick={() => onClick()}>
-      <i className="fa-sharp fa-solid fa-pen-to-square"></i>
-    </button>
-  );
-};
