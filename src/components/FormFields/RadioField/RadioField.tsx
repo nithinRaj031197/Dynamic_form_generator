@@ -1,5 +1,6 @@
 import React from "react";
 import { FormInitialInput } from "../../../global";
+import "./radioField.css";
 
 interface RadioFieldProps {
   label: string;
